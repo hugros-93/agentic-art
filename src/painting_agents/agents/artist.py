@@ -6,7 +6,9 @@ from langchain_core.tools import BaseTool
 
 from painting_agents.agents.contracts import ArtistResult, PaintingPlan
 from painting_agents.models.ollama import create_ollama_model
-
+from painting_agents.observability.agent_middleware import (
+    OpenTelemetryAgentMiddleware,
+)
 
 class ArtistAgent:
     def __init__(
@@ -34,6 +36,9 @@ class ArtistAgent:
                 "6. Work directly on the canvas; do not merely describe "
                 "what could be drawn.\n"
             ),
+            middleware=[
+                    OpenTelemetryAgentMiddleware(),
+                ]
         )
 
     async def paint(
@@ -55,15 +60,8 @@ class ArtistAgent:
             )
 
         result = await self.agent.ainvoke(
-            {
-                "messages": [
-                    {
-                        "role": "user",
-                        "content": content,
-                    }
-                ]
-            }
-        )
+            {"messages": [{"role": "user", "content": content}]}
+)
 
         return self._build_result(result)
 

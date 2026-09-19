@@ -16,5 +16,8 @@ class Settings(BaseModel):
         le=2.0,
     )
 
+    otel_service_name: str = Field(default="painting-agents")
+    otel_exporter_otlp_endpoint: str = Field(default="http://localhost:4317")
+
 
 settings = Settings()

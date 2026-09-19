@@ -11,7 +11,7 @@ from painting_agents.mcp.client import PaintingMCPClient
 
 @pytest.mark.asyncio
 @pytest.mark.integration
-async def test_painting_graph_end_to_end() -> None:
+async def test_painting_graph_end_to_end(tmp_path: Path) -> None:
     project_root = Path(__file__).resolve().parents[2]
     server_script = project_root / "scripts" / "run_mcp_server.py"
 
@@ -29,6 +29,7 @@ async def test_painting_graph_end_to_end() -> None:
             director=director,
             artist=artist,
             critic=critic,
+            output_dir=tmp_path,
         )
 
         result = await graph.ainvoke(

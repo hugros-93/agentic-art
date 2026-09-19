@@ -122,3 +122,30 @@ def test_duplicate_shape_id_is_rejected(tools: CanvasTools) -> None:
             radius=50,
             fill="#FF0000",
         )
+
+def test_add_circle_records_artist_operation() -> None:
+    session = create_painting_session(
+        title="Test painting",
+    )
+
+    tools = CanvasTools(
+        session,
+        agent_id="artist",
+    )
+
+    result = tools.add_circle(
+        shape_id="sun",
+        x=200,
+        y=100,
+        radius=50,
+        fill="#FDB813",
+    )
+
+    assert result["success"] is True
+    assert len(session.operations) == 1
+
+    operation = session.operations[0]
+
+    assert operation.agent_id == "artist"
+    assert operation.operation == "add_circle"
+    assert operation.details["shape_id"] == "sun"

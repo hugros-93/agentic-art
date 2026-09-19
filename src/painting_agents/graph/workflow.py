@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from langgraph.graph import END, START, StateGraph
 
 from painting_agents.agents.artist import ArtistAgent
@@ -14,28 +16,33 @@ def build_painting_graph(
     director: DirectorAgent,
     artist: ArtistAgent,
     critic: CriticAgent,
+    output_dir: Path,
 ):
     nodes = PaintingGraphNodes(
         mcp_client=mcp_client,
         director=director,
         artist=artist,
         critic=critic,
+        output_dir=output_dir,
     )
 
     graph = StateGraph(PaintingGraphState)
 
     graph.add_node("director", nodes.director_node)
     graph.add_node("artist", nodes.artist_node)
+    graph.add_node("render", nodes.render_node)
     graph.add_node("critic", nodes.critic_node)
 
     graph.add_edge(START, "director")
     graph.add_edge("director", "artist")
-    graph.add_edge("artist", "critic")
+    graph.add_edge("artist", "render")
+    graph.add_edge("render", "critic")
 
     def critic_router(state: PaintingGraphState) -> str:
         critique = state.get("critique")
         if critique is None:
             raise ValueError("Critique is required before routing.")
+
         iteration = state.get("iteration", 0)
         max_iterations = state.get("max_iterations", 3)
 

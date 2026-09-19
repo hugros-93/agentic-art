@@ -1,4 +1,5 @@
 from typing import Any
+from pathlib import Path
 
 import pytest
 
@@ -58,12 +59,13 @@ class FakeMCPClient:
 
 
 @pytest.mark.asyncio
-async def test_graph_ends_when_critic_approves() -> None:
+async def test_graph_ends_when_critic_approves(tmp_path: Path) -> None:
     graph = build_painting_graph(
         mcp_client=FakeMCPClient(),  # type: ignore[arg-type]
         director=FakeDirector(),  # type: ignore[arg-type]
         artist=FakeArtist(),  # type: ignore[arg-type]
         critic=FakeCritic([True]),  # type: ignore[arg-type]
+        output_dir=tmp_path,  # type: ignore[arg-type]
     )
 
     result = await graph.ainvoke(
@@ -80,7 +82,7 @@ async def test_graph_ends_when_critic_approves() -> None:
 
 
 @pytest.mark.asyncio
-async def test_graph_loops_when_critic_rejects() -> None:
+async def test_graph_loops_when_critic_rejects(tmp_path: Path) -> None:
     critic = FakeCritic([False, True])
 
     graph = build_painting_graph(
@@ -88,6 +90,7 @@ async def test_graph_loops_when_critic_rejects() -> None:
         director=FakeDirector(),  # type: ignore[arg-type]
         artist=FakeArtist(),  # type: ignore[arg-type]
         critic=critic,  # type: ignore[arg-type]
+        output_dir=tmp_path,  # type: ignore[arg-type]
     )
 
     result = await graph.ainvoke(
@@ -103,7 +106,7 @@ async def test_graph_loops_when_critic_rejects() -> None:
 
 
 @pytest.mark.asyncio
-async def test_graph_stops_at_max_iterations() -> None:
+async def test_graph_stops_at_max_iterations(tmp_path: Path) -> None:
     critic = FakeCritic([False])
 
     graph = build_painting_graph(
@@ -111,6 +114,7 @@ async def test_graph_stops_at_max_iterations() -> None:
         director=FakeDirector(),  # type: ignore[arg-type]
         artist=FakeArtist(),  # type: ignore[arg-type]
         critic=critic,  # type: ignore[arg-type]
+        output_dir=tmp_path,  # type: ignore[arg-type]
     )
 
     result = await graph.ainvoke(

@@ -1,15 +1,21 @@
 from typing import cast
 
 from langchain_core.language_models import BaseChatModel
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from opentelemetry import trace
 
 from painting_agents.agents.contracts import PaintingPlan
 from painting_agents.models.ollama import create_ollama_model
+from painting_agents.observability.llm import (
+    record_llm_prompt,
+    record_llm_response,
+)
+
+
+tracer = trace.get_tracer(__name__)
 
 
 class DirectorAgent:
-    """Creates a structured painting plan from a user's artistic request."""
-
     def __init__(self, model: BaseChatModel | None = None) -> None:
         if model is None:
             model = create_ollama_model()
@@ -17,8 +23,6 @@ class DirectorAgent:
         self.model = model.with_structured_output(PaintingPlan)
 
     def create_plan(self, request: str) -> PaintingPlan:
-        """Turn a natural-language request into a painting plan."""
-
         messages = [
             SystemMessage(
                 content=(
@@ -31,6 +35,15 @@ class DirectorAgent:
             HumanMessage(content=request),
         ]
 
-        result = self.model.invoke(messages)
+        with tracer.start_as_current_span("llm.call") as span:
+            span.set_attribute("llm.agent", "director")
+            span.set_attribute("llm.operation", "create_plan")
 
-        return cast(PaintingPlan, result)
+            record_llm_prompt(span, messages)
+
+            response = self.model.invoke(messages)
+
+            if isinstance(response, AIMessage):
+                record_llm_response(span, response)
+
+            return cast(PaintingPlan, response)

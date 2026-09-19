@@ -61,3 +61,34 @@ def test_canvas_tools_operate_on_session() -> None:
 
     assert len(session.operations) == 1
     assert session.operations[0].operation == "add_circle"
+
+def test_session_records_operations() -> None:
+    session = create_painting_session(
+        title="Test painting",
+    )
+
+    session.record_operation(
+        agent_id="artist",
+        operation="add_circle",
+        details={"shape_id": "sun"},
+    )
+
+    assert len(session.operations) == 1
+
+    operation = session.operations[0]
+
+    assert operation.agent_id == "artist"
+    assert operation.operation == "add_circle"
+    assert operation.details["shape_id"] == "sun"
+
+
+def test_session_iteration() -> None:
+    session = create_painting_session(
+        title="Test painting",
+    )
+
+    assert session.iteration == 0
+
+    session.next_iteration()
+
+    assert session.iteration == 1

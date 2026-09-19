@@ -1,17 +1,22 @@
 from typing import Any, cast
 
 from langchain_core.language_models import BaseChatModel
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
+from opentelemetry import trace
 
 from painting_agents.agents.contracts import Critique, PaintingPlan
 from painting_agents.models.ollama import create_ollama_model
+from painting_agents.observability.llm import (
+    record_llm_prompt,
+    record_llm_response,
+)
+
+
+tracer = trace.get_tracer(__name__)
 
 
 class CriticAgent:
-    def __init__(
-        self,
-        model: BaseChatModel | None = None,
-    ) -> None:
+    def __init__(self, model: BaseChatModel | None = None) -> None:
         if model is None:
             model = create_ollama_model()
 
@@ -47,6 +52,15 @@ class CriticAgent:
             ),
         ]
 
-        result = self.model.invoke(messages)
+        with tracer.start_as_current_span("llm.call") as span:
+            span.set_attribute("llm.agent", "critic")
+            span.set_attribute("llm.operation", "critique")
 
-        return cast(Critique, result)
+            record_llm_prompt(span, messages)
+
+            response = self.model.invoke(messages)
+
+            if isinstance(response, AIMessage):
+                record_llm_response(span, response)
+
+            return cast(Critique, response)

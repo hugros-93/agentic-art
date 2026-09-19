@@ -15,7 +15,10 @@ def create_session() -> PaintingSession:
 
 
 _session = create_session()
-_tools = CanvasTools(_session)
+_tools = CanvasTools(
+    _session,
+    agent_id="artist",
+)
 
 
 @mcp.tool()
