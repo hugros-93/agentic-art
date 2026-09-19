@@ -36,16 +36,30 @@ class ArtistAgent:
             ),
         )
 
-    async def paint(self, plan: PaintingPlan) -> ArtistResult:
+    async def paint(
+        self,
+        plan: PaintingPlan,
+        critique: str | None = None,
+    ) -> ArtistResult:
+        content = (
+            "Execute this painting plan:\n\n"
+            f"{plan.model_dump_json(indent=2)}"
+        )
+
+        if critique is not None:
+            content += (
+                "\n\nPrevious critic feedback:\n\n"
+                f"{critique}\n\n"
+                "Address the critic's feedback while preserving the "
+                "parts of the painting that already satisfy the plan."
+            )
+
         result = await self.agent.ainvoke(
             {
                 "messages": [
                     {
                         "role": "user",
-                        "content": (
-                            "Execute this painting plan:\n\n"
-                            f"{plan.model_dump_json(indent=2)}"
-                        ),
+                        "content": content,
                     }
                 ]
             }
