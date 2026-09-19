@@ -10,40 +10,36 @@ def record_llm_response(
     span: trace.Span,
     response: AIMessage,
 ) -> None:
-    """Record LLM usage and provider metadata."""
-
     usage = response.usage_metadata or {}
     metadata = response.response_metadata or {}
 
-    # Canonical token source.
     _set_attribute(span, "llm.input_tokens", usage.get("input_tokens"))
     _set_attribute(span, "llm.output_tokens", usage.get("output_tokens"))
     _set_attribute(span, "llm.total_tokens", usage.get("total_tokens"))
 
-    # Model/provider metadata.
     model = metadata.get("model") or metadata.get("model_name")
-    provider = metadata.get("model_provider")
-
     _set_attribute(span, "llm.model", model)
-    _set_attribute(span, "llm.provider", provider)
+    _set_attribute(span, "llm.provider", metadata.get("model_provider"))
     _set_attribute(span, "llm.finish_reason", metadata.get("done_reason"))
 
-    # Ollama durations are nanoseconds.
     _set_duration_ms(
         span,
         "llm.total_duration_ms",
         metadata.get("total_duration"),
     )
+
     _set_duration_ms(
         span,
         "llm.load_duration_ms",
         metadata.get("load_duration"),
     )
+
     _set_duration_ms(
         span,
         "llm.prompt_eval_duration_ms",
         metadata.get("prompt_eval_duration"),
     )
+
     _set_duration_ms(
         span,
         "llm.eval_duration_ms",
@@ -55,7 +51,6 @@ def record_llm_response(
             "llm.response",
             {"content": str(response.content)},
         )
-
 
 def record_llm_prompt(
     span: trace.Span,

@@ -32,21 +32,22 @@ class OpenTelemetryAgentMiddleware(AgentMiddleware):
         with self.tracer.start_as_current_span("llm.call") as span:
             span.set_attribute("llm.source", "langchain.agent")
 
-            model = request.model
-
-            model_name = getattr(model, "model", None)
+            model_name = getattr(request.model, "model", None)
             if isinstance(model_name, str):
                 span.set_attribute("llm.model", model_name)
 
-            record_llm_prompt(
-                span,
-                request.messages,
-            )
+            record_llm_prompt(span, request.messages)
 
             try:
                 response = await handler(request)
-                self._record_response(span, response)
+
+                for message in reversed(response.result):
+                    if isinstance(message, AIMessage):
+                        record_llm_response(span, message)
+                        break
+
                 return response
+
             except Exception as exc:
                 span.record_exception(exc)
                 span.set_status(trace.StatusCode.ERROR)

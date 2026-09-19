@@ -8,7 +8,8 @@ class Settings(BaseModel):
         default="http://localhost:11434",
     )
     ollama_model: str = Field(
-        default="qwen3:0.6b",
+        # default="qwen3:0.6b",
+        default="qwen3:1.7b ",
     )
     ollama_temperature: float = Field(
         default=0.2,

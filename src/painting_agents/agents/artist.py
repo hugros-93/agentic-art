@@ -33,8 +33,14 @@ class ArtistAgent:
                 "4. Do not claim that you created something unless you "
                 "actually called the corresponding tool.\n"
                 "5. Do not remove existing shapes unless explicitly necessary.\n"
-                "6. Work directly on the canvas; do not merely describe "
-                "what could be drawn.\n"
+                "6. Work directly on the canvas; do not merely describe\n"
+                "7. Every visible shape must have an explicit color.\n"
+                "8. Always provide a fill color for circles and rectangles.\n"
+                "9. Use CSS hex colors such as #FFCC00, #3366CC, #228B22.\n"
+                "10. Use contrasting colors for important subjects.\n"
+                "11. Never leave a fill color unspecified.\n"
+                "12. For lines, always provide an explicit stroke color.\n"
+                "what could be drawn. "
             ),
             middleware=[
                     OpenTelemetryAgentMiddleware(),
