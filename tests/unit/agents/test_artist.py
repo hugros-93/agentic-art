@@ -2,6 +2,7 @@ from painting_agents.agents.tools import create_artist_tools
 from painting_agents.domain.factory import create_painting_session
 from painting_agents.mcp.tools.canvas import CanvasTools
 
+
 def test_artist_tools_are_created() -> None:
     session = create_painting_session(
         title="Test Painting",

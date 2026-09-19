@@ -1,18 +1,20 @@
 from mcp.server.fastmcp import FastMCP
 
-from painting_agents.domain.canvas import Canvas
-from painting_agents.mcp.tools.canvas import CanvasTools
-
 from painting_agents.domain.factory import create_painting_session
+from painting_agents.domain.session import PaintingSession
+from painting_agents.mcp.tools.canvas import CanvasTools
 
 mcp = FastMCP("painting-tools")
 
-_session = create_painting_session(
-    title="Untitled Painting",
-    width=1024,
-    height=768,
-)
+def create_session() -> PaintingSession:
+    return create_painting_session(
+        title="Untitled Painting",
+        width=1024,
+        height=768,
+    )
 
+
+_session = create_session()
 _tools = CanvasTools(_session)
 
 
