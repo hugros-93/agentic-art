@@ -25,3 +25,19 @@ class ArtistResult(BaseModel):
         default_factory=list,
         description="IDs of shapes created by the artist.",
     )
+
+class Critique(BaseModel):
+    approved: bool = Field(
+        description="Whether the painting sufficiently satisfies the plan."
+    )
+    assessment: str = Field(
+        description="A concise overall assessment of the painting."
+    )
+    issues: list[str] = Field(
+        default_factory=list,
+        description="Specific problems that should be addressed."
+    )
+    recommendations: list[str] = Field(
+        default_factory=list,
+        description="Concrete recommendations for improving the painting."
+    )
