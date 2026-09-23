@@ -3,7 +3,7 @@ import asyncio
 from pathlib import Path
 
 from painting_agents.application import create_painting
-from painting_agents.exceptions import LLMRateLimitError, LLMProviderError, PaintingApplicationError
+from painting_agents.exceptions import LLMProviderError, LLMRateLimitError, PaintingApplicationError
 
 
 def main() -> None:
@@ -51,13 +51,13 @@ def main() -> None:
         )
     except LLMRateLimitError as exc:
         print(f"Painting failed: {exc}")
-        raise SystemExit(2)
+        raise SystemExit(2) from None
     except LLMProviderError as exc:
         print(f"LLM provider error: {exc}")
-        raise SystemExit(3)
+        raise SystemExit(3) from None
     except PaintingApplicationError as exc:
         print(f"Painting failed: {exc}")
-        raise SystemExit(1)
+        raise SystemExit(1) from None
 
     critique = result.get("critique")
 

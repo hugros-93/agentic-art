@@ -1,0 +1,16 @@
+#!/bin/sh
+set -e
+
+echo "Formatting..."
+uv run ruff format
+
+echo "Linting..."
+uv run ruff check
+
+echo "Type checking..."
+uv run pyright
+
+echo "Running tests..."
+uv run pytest
+
+echo "All checks passed."

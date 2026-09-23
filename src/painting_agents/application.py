@@ -1,7 +1,8 @@
+import asyncio
 from pathlib import Path
 from typing import Any
 from uuid import uuid4
-import asyncio
+
 import httpx
 
 from painting_agents.agents.artist import ArtistAgent
@@ -21,7 +22,6 @@ from painting_agents.observability.tracing import (
     get_tracer,
 )
 from painting_agents.rendering.png import render_png
-
 
 otel_callback = OpenTelemetryCallbackHandler()
 
