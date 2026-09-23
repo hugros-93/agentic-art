@@ -37,6 +37,8 @@ class CanvasTools:
         radius: float,
         fill: str,
         stroke: str | None = None,
+        z_index: int = 0,
+        opacity: float = 1.0,
     ) -> dict[str, Any]:
         with self.tracer.start_as_current_span("mcp.add_circle") as span:
             span.set_attribute("mcp.tool", "add_circle")
@@ -46,6 +48,8 @@ class CanvasTools:
             span.set_attribute("painting.y", y)
             span.set_attribute("painting.radius", radius)
             span.set_attribute("painting.fill", fill)
+            span.set_attribute("painting.z_index", z_index)
+            span.set_attribute("painting.opacity", opacity)
 
             if stroke is not None:
                 span.set_attribute("painting.stroke", stroke)
@@ -57,6 +61,8 @@ class CanvasTools:
                     radius=radius,
                     fill=Color(value=fill),
                     stroke=Color(value=stroke) if stroke else None,
+                    z_index=z_index,
+                    opacity=opacity,
                 )
 
                 self.canvas.add_shape(circle)
@@ -71,6 +77,8 @@ class CanvasTools:
                         "radius": radius,
                         "fill": fill,
                         "stroke": stroke,
+                        "z_index": z_index,
+                        "opacity": opacity,
                     },
                 )
 
@@ -96,6 +104,8 @@ class CanvasTools:
         height: float,
         fill: str,
         stroke: str | None = None,
+        z_index: int = 0,
+        opacity: float = 1.0,
     ) -> dict[str, Any]:
         with self.tracer.start_as_current_span("mcp.add_rectangle") as span:
             span.set_attribute("mcp.tool", "add_rectangle")
@@ -106,6 +116,8 @@ class CanvasTools:
             span.set_attribute("painting.width", width)
             span.set_attribute("painting.height", height)
             span.set_attribute("painting.fill", fill)
+            span.set_attribute("painting.z_index", z_index)
+            span.set_attribute("painting.opacity", opacity)
 
             if stroke is not None:
                 span.set_attribute("painting.stroke", stroke)
@@ -118,6 +130,8 @@ class CanvasTools:
                     height=height,
                     fill=Color(value=fill),
                     stroke=Color(value=stroke) if stroke else None,
+                    z_index=z_index,
+                    opacity=opacity,
                 )
 
                 self.canvas.add_shape(rectangle)
@@ -133,6 +147,8 @@ class CanvasTools:
                         "height": height,
                         "fill": fill,
                         "stroke": stroke,
+                        "z_index": z_index,
+                        "opacity": opacity,
                     },
                 )
 
@@ -158,6 +174,8 @@ class CanvasTools:
         end_y: float,
         stroke: str,
         stroke_width: float = 1.0,
+        z_index: int = 0,
+        opacity: float = 1.0,
     ) -> dict[str, Any]:
         with self.tracer.start_as_current_span("mcp.add_line") as span:
             span.set_attribute("mcp.tool", "add_line")
@@ -169,6 +187,8 @@ class CanvasTools:
             span.set_attribute("painting.end_y", end_y)
             span.set_attribute("painting.stroke", stroke)
             span.set_attribute("painting.stroke_width", stroke_width)
+            span.set_attribute("painting.z_index", z_index)
+            span.set_attribute("painting.opacity", opacity)
 
             try:
                 line = Line(
@@ -177,6 +197,8 @@ class CanvasTools:
                     end=Point(x=end_x, y=end_y),
                     stroke=Color(value=stroke),
                     stroke_width=stroke_width,
+                    z_index=z_index,
+                    opacity=opacity,
                 )
 
                 self.canvas.add_shape(line)
@@ -192,6 +214,8 @@ class CanvasTools:
                         "end_y": end_y,
                         "stroke": stroke,
                         "stroke_width": stroke_width,
+                        "z_index": z_index,
+                        "opacity": opacity,
                     },
                 )
 

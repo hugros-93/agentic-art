@@ -27,6 +27,7 @@ def _render_shape(parent: ET.Element, shape: Shape) -> None:
             "cy": shape.center.y,
             "r": shape.radius,
             "fill": shape.fill.value,
+            "opacity": shape.opacity,
         }
 
         if shape.stroke is not None:
@@ -43,6 +44,7 @@ def _render_shape(parent: ET.Element, shape: Shape) -> None:
             "width": shape.width,
             "height": shape.height,
             "fill": shape.fill.value,
+            "opacity": shape.opacity,
         }
 
         if shape.stroke is not None:
@@ -62,6 +64,7 @@ def _render_shape(parent: ET.Element, shape: Shape) -> None:
                 y2=shape.end.y,
                 stroke=shape.stroke.value,
                 **{"stroke-width": shape.stroke_width},
+                opacity=shape.opacity,
             )
         )
         return
@@ -79,7 +82,7 @@ def render_svg(canvas: Canvas) -> str:
         viewBox=f"0 0 {canvas.width} {canvas.height}",
     )
 
-    for shape in canvas.shapes:
+    for shape in sorted(canvas.shapes, key=lambda shape: shape.z_index):
         _render_shape(root, shape)
 
     return ET.tostring(root, encoding="unicode")

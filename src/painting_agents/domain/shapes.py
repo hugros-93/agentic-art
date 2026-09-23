@@ -8,11 +8,17 @@ class Point(BaseModel):
     y: float
 
 
+class ShapeBase(BaseModel):
+    id: str
+    z_index: int = 0
+    opacity: float = Field(default=1.0, ge=0.0, le=1.0)
+
+
 class Color(BaseModel):
     value: str
 
 
-class Circle(BaseModel):
+class Circle(ShapeBase):
     id: str
     type: Literal["circle"] = "circle"
     center: Point
@@ -21,7 +27,7 @@ class Circle(BaseModel):
     stroke: Color | None = None
 
 
-class Rectangle(BaseModel):
+class Rectangle(ShapeBase):
     id: str
     type: Literal["rectangle"] = "rectangle"
     position: Point
@@ -31,7 +37,7 @@ class Rectangle(BaseModel):
     stroke: Color | None = None
 
 
-class Line(BaseModel):
+class Line(ShapeBase):
     id: str
     type: Literal["line"] = "line"
     start: Point

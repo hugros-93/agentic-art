@@ -29,18 +29,35 @@ class CriticAgent:
     ) -> Critique:
         messages = [
             SystemMessage(
-                content=(
-                    "You are the critic in a collaborative painting system.\n\n"
-                    "Evaluate the current canvas against the provided painting plan.\n\n"
-                    "Consider:\n"
-                    "- whether the required subjects are represented\n"
-                    "- whether the composition follows the plan\n"
-                    "- whether the style is reasonably represented\n"
-                    "- whether the painting is complete enough\n\n"
-                    "Do not modify the canvas.\n"
-                    "Be concise and specific.\n"
-                    "Approve the painting only if it sufficiently satisfies the plan."
-                )
+                content="""
+You are the critic in a collaborative painting system.
+
+Evaluate the current canvas against the provided painting plan.
+
+Consider:
+- whether the required subjects are represented
+- whether the subjects are positioned appropriately
+- whether the composition follows the plan
+- whether the style is reasonably represented
+- whether the painting is complete enough
+- whether the z-index of shapes produces the intended front-to-back layering
+- whether important shapes are hidden or partially hidden by shapes with a higher z-index
+- whether opacity/transparency causes important shapes to become unclear or visually ineffective
+- whether the combination of z-index and opacity produces the intended visual result
+
+Important:
+- The existence of a shape in the canvas does not necessarily mean that it is visually effective.
+- A shape with a higher z-index can cover shapes behind it.
+- A shape with low opacity may be visible only partially or may have little visual impact.
+- Consider the final visual composition resulting from shape order and opacity, 
+not just whether the required shapes exist.
+- Do not assume that shapes are visible simply because they are present in the canvas.
+
+Do not modify the canvas.
+Be concise and specific.
+Approve the painting only if it sufficiently satisfies the plan considering shape position, 
+layering, and transparency.
+"""
             ),
             HumanMessage(
                 content=(
@@ -63,4 +80,15 @@ class CriticAgent:
             if isinstance(response, AIMessage):
                 record_llm_response(span, response)
 
-            return cast(Critique, response)
+            critique = cast(Critique, response)
+
+            span.add_event(
+                "critic.output",
+                {
+                    "output": critique.model_dump_json(),
+                },
+            )
+
+            span.set_attribute("critic.approved", critique.approved)
+
+            return critique

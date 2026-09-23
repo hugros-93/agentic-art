@@ -44,6 +44,9 @@ the corresponding tool successfully.
 - Preserve existing work unless modification or removal is necessary.
 - When the painting is complete, stop calling tools and provide a short summary.
 - When a tool requires a color, use a valid 6-digit hexadecimal. CSS color in the form #RRGGBB.
+- Use z_index to control the front-to-back order of shapes.
+- Lower z_index values are rendered behind higher values.
+- Use opacity between 0.0 and 1.0 when transparency is needed.
             """,
             middleware=[
                 OpenTelemetryAgentMiddleware(),
