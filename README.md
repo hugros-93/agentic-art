@@ -6,7 +6,7 @@
   <em></em>
 </p>
 
-A local, multi-agent painting system where LLM agents collaborate to turn a natural-language request into a structured painting and a rendered image.
+A multi-agent painting system where LLM agents collaborate to turn a natural-language request into a structured painting and a rendered image.
 
 The project uses **LangChain**, **LangGraph**, **MCP**, **Ollama**, **Mistral**, **Pydantic**, **SVG/CairoSVG**, and **OpenTelemetry** to provide a modular foundation for experimenting with collaborative AI agents that can perform real drawing operations.
 
