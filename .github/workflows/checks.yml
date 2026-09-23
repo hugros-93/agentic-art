@@ -35,8 +35,5 @@ jobs:
       - name: Type check
         run: uv run pyright
 
-      - name: Tests
-        run: uv run pytest 
-
       - name: Unit tests
         run: uv run pytest test/unit/
