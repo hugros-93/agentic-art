@@ -7,6 +7,11 @@ on:
       - master
   pull_request:
 
+env:
+  LLM_PROVIDER: mistral
+  MISTRAL_MODEL: mistral-small
+  MISTRAL_TEMPERATURE: "0.2"
+
 jobs:
   checks:
     runs-on: ubuntu-latest
@@ -37,3 +42,5 @@ jobs:
 
       - name: Tests
         run: uv run pytest
+        env:
+          MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
