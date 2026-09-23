@@ -6,6 +6,7 @@ from opentelemetry.sdk.trace.export.in_memory_span_exporter import InMemorySpanE
 from painting_agents.domain.factory import create_painting_session
 from painting_agents.mcp.tools.canvas import CanvasTools
 
+
 def test_add_circle_creates_mcp_span() -> None:
     exporter = InMemorySpanExporter()
 

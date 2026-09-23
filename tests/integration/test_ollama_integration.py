@@ -1,11 +1,12 @@
 import pytest
 
-from painting_agents.models.ollama import create_ollama_model
+from painting_agents.config import Settings
+from painting_agents.models.chat import create_chat_model
 
 
 @pytest.mark.integration
 def test_ollama_can_generate() -> None:
-    model = create_ollama_model()
+    model = create_chat_model(Settings())
 
     response = model.invoke(
         "Reply with exactly: painting model online"

@@ -10,17 +10,12 @@ from opentelemetry.sdk.resources import Resource
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
-from painting_agents.config import settings
-
+from painting_agents.config import Settings
 
 _initialized = False
 
-
-def configure_tracing() -> None:
-    global _initialized
-
-    if _initialized:
-        return
+def configure_tracing(settings: Settings) -> None:
+    """Configure OpenTelemetry tracing."""
 
     resource = Resource.create(
         {
@@ -28,9 +23,7 @@ def configure_tracing() -> None:
         }
     )
 
-    provider = TracerProvider(
-        resource=resource,
-    )
+    provider = TracerProvider(resource=resource)
 
     exporter = OTLPSpanExporter(
         endpoint=settings.otel_exporter_otlp_endpoint,
@@ -42,8 +35,6 @@ def configure_tracing() -> None:
     )
 
     trace.set_tracer_provider(provider)
-
-    _initialized = True
 
 
 def flush_tracing() -> None:

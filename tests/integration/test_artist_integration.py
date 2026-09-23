@@ -6,6 +6,7 @@ from painting_agents.agents.artist import ArtistAgent
 from painting_agents.agents.contracts import PaintingPlan
 from painting_agents.mcp.client import PaintingMCPClient
 
+
 @pytest.mark.asyncio
 async def test_artist_can_paint_through_mcp() -> None:
     project_root = Path(__file__).resolve().parents[2]

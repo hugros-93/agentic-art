@@ -1,9 +1,10 @@
 from painting_agents.agents.contracts import PaintingPlan
-from painting_agents.models.ollama import create_ollama_model
+from painting_agents.config import Settings
+from painting_agents.models.chat import create_chat_model
 
 
 def test_qwen_can_create_painting_plan() -> None:
-    model = create_ollama_model()
+    model = create_chat_model(Settings())
 
     structured_model = model.with_structured_output(
         PaintingPlan,

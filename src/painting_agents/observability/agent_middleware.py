@@ -16,6 +16,7 @@ from painting_agents.observability.llm import (
     record_llm_response,
 )
 
+
 class OpenTelemetryAgentMiddleware(AgentMiddleware):
     """OpenTelemetry instrumentation for LangChain agents."""
     def __init__(

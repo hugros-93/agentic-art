@@ -5,12 +5,12 @@ from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 from opentelemetry import trace
 
 from painting_agents.agents.contracts import PaintingPlan
-from painting_agents.models.ollama import create_ollama_model
+from painting_agents.config import Settings
+from painting_agents.models.chat import create_chat_model
 from painting_agents.observability.llm import (
     record_llm_prompt,
     record_llm_response,
 )
-
 
 tracer = trace.get_tracer(__name__)
 
@@ -18,7 +18,7 @@ tracer = trace.get_tracer(__name__)
 class DirectorAgent:
     def __init__(self, model: BaseChatModel | None = None) -> None:
         if model is None:
-            model = create_ollama_model()
+            model = create_chat_model(Settings())
 
         self.model = model.with_structured_output(PaintingPlan)
 

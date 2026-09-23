@@ -1,7 +1,8 @@
-from unittest.mock import AsyncMock
+from unittest.mock import AsyncMock, MagicMock
 
 import pytest
 from langchain.agents.middleware import ModelRequest, ModelResponse
+from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import AIMessage, HumanMessage
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
@@ -12,10 +13,6 @@ from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
 from painting_agents.observability.agent_middleware import (
     OpenTelemetryAgentMiddleware,
 )
-
-from unittest.mock import MagicMock
-
-from langchain_core.language_models import BaseChatModel
 
 model = MagicMock(spec=BaseChatModel)
 model.model = "qwen3:0.6b"

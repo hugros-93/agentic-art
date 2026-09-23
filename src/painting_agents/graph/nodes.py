@@ -1,11 +1,10 @@
-from typing import Any
 from pathlib import Path
+from typing import Any
 
-from painting_agents.domain.canvas import Canvas
-from painting_agents.rendering.png import render_png
 from painting_agents.agents.artist import ArtistAgent
 from painting_agents.agents.critic import CriticAgent
 from painting_agents.agents.director import DirectorAgent
+from painting_agents.domain.canvas import Canvas
 from painting_agents.graph.state import PaintingGraphState
 from painting_agents.mcp.client import PaintingMCPClient
 from painting_agents.observability.tracing import (
@@ -13,6 +12,7 @@ from painting_agents.observability.tracing import (
     set_painting_context,
     set_span_attributes,
 )
+from painting_agents.rendering.png import render_png
 
 tracer = get_tracer(__name__)
 

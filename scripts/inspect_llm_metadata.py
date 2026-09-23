@@ -1,7 +1,6 @@
 import asyncio
 
 from langchain_core.messages import HumanMessage
-
 from painting_agents.models.ollama import create_ollama_model
 
 

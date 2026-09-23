@@ -5,10 +5,12 @@ from langchain_core.language_models import BaseChatModel
 from langchain_core.tools import BaseTool
 
 from painting_agents.agents.contracts import ArtistResult, PaintingPlan
-from painting_agents.models.ollama import create_ollama_model
+from painting_agents.config import Settings
+from painting_agents.models.chat import create_chat_model
 from painting_agents.observability.agent_middleware import (
     OpenTelemetryAgentMiddleware,
 )
+
 
 class ArtistAgent:
     def __init__(
@@ -17,31 +19,32 @@ class ArtistAgent:
         model: BaseChatModel | None = None,
     ) -> None:
         if model is None:
-            model = create_ollama_model()
+            model = create_chat_model(Settings())
 
         self.agent = create_agent(
             model=model,
             tools=tools,
-            system_prompt=(
-                "You are an artist in a collaborative painting system.\n\n"
-                "Your job is to turn the provided painting plan into "
-                "concrete drawing operations on the canvas.\n\n"
-                "Rules:\n"
-                "1. Use the available drawing tools to create the painting.\n"
-                "2. Prefer simple geometric compositions.\n"
-                "3. Every shape must have a unique, descriptive ID.\n"
-                "4. Do not claim that you created something unless you "
-                "actually called the corresponding tool.\n"
-                "5. Do not remove existing shapes unless explicitly necessary.\n"
-                "6. Work directly on the canvas; do not merely describe\n"
-                "7. Every visible shape must have an explicit color.\n"
-                "8. Always provide a fill color for circles and rectangles.\n"
-                "9. Use CSS hex colors such as #FFCC00, #3366CC, #228B22.\n"
-                "10. Use contrasting colors for important subjects.\n"
-                "11. Never leave a fill color unspecified.\n"
-                "12. For lines, always provide an explicit stroke color.\n"
-                "what could be drawn. "
-            ),
+            system_prompt="""
+You are an artist in a collaborative painting system.
+
+Your job is to execute the provided painting plan on the canvas.
+
+Tool usage rules:
+- Inspect the tools available to you and use them to accomplish the plan.
+- Treat the provided tool definitions and schemas as authoritative.
+- Never invent a tool, argument, or capability.
+- Use the appropriate available tool whenever an actual canvas modification
+or inspection is required.
+- You may make multiple tool calls.
+- After receiving a tool result, evaluate whether additional tool calls are
+required to complete the painting.
+- Inspect the current canvas when necessary before modifying it.
+- Do not claim that an operation was performed unless you actually called
+the corresponding tool successfully.
+- Preserve existing work unless modification or removal is necessary.
+- When the painting is complete, stop calling tools and provide a short summary.
+- When a tool requires a color, use a valid 6-digit hexadecimal. CSS color in the form #RRGGBB.
+            """,
             middleware=[
                     OpenTelemetryAgentMiddleware(),
                 ]

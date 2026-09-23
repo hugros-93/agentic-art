@@ -20,6 +20,7 @@ dependencies = [
     "langchain-mcp-adapters>=0.3.2",
     "cairosvg>=2.9.1",
     "opentelemetry-exporter-otlp>=1.44.0",
+    "langchain-mistralai>=1.1.6",
 ]
 
 [dependency-groups]

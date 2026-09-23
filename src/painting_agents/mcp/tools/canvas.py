@@ -12,6 +12,7 @@ from painting_agents.domain.shapes import (
 )
 from painting_agents.observability.mcp import record_mcp_result
 
+
 class CanvasTools:
     def __init__(
         self,

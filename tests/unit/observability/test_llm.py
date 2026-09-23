@@ -1,9 +1,9 @@
+from langchain_core.messages import AIMessage
 from opentelemetry.sdk.trace import TracerProvider
 from opentelemetry.sdk.trace.export import SimpleSpanProcessor
 from opentelemetry.sdk.trace.export.in_memory_span_exporter import (
     InMemorySpanExporter,
 )
-from langchain_core.messages import AIMessage
 
 from painting_agents.observability.llm import record_llm_response
 
