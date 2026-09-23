@@ -34,11 +34,7 @@ def main() -> None:
 
     project_root = Path(__file__).resolve().parents[1]
 
-    server_script = (
-        project_root
-        / "scripts"
-        / "run_mcp_server.py"
-    )
+    server_script = project_root / "scripts" / "run_mcp_server.py"
 
     try:
         result = asyncio.run(

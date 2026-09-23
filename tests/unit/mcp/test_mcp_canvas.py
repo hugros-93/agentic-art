@@ -11,9 +11,7 @@ def test_add_circle_creates_mcp_span() -> None:
     exporter = InMemorySpanExporter()
 
     provider = TracerProvider()
-    provider.add_span_processor(
-        SimpleSpanProcessor(exporter)
-    )
+    provider.add_span_processor(SimpleSpanProcessor(exporter))
 
     trace.set_tracer_provider(provider)
 
@@ -35,11 +33,7 @@ def test_add_circle_creates_mcp_span() -> None:
 
     spans = exporter.get_finished_spans()
 
-    mcp_spans = [
-        span
-        for span in spans
-        if span.name == "mcp.add_circle"
-    ]
+    mcp_spans = [span for span in spans if span.name == "mcp.add_circle"]
 
     assert len(mcp_spans) == 1
 

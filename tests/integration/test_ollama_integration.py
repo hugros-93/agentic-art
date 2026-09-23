@@ -8,9 +8,7 @@ from painting_agents.models.chat import create_chat_model
 def test_ollama_can_generate() -> None:
     model = create_chat_model(Settings())
 
-    response = model.invoke(
-        "Reply with exactly: painting model online"
-    )
+    response = model.invoke("Reply with exactly: painting model online")
 
     assert response.content
     assert isinstance(response.content, str)

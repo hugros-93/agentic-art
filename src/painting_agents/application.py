@@ -92,10 +92,7 @@ async def create_painting(
                     if attempt >= settings.painting_max_retries:
                         raise
 
-                    delay = (
-                        settings.painting_retry_delay_seconds
-                        * (2**attempt)
-                    )
+                    delay = settings.painting_retry_delay_seconds * (2**attempt)
 
                     span.add_event(
                         "painting.retry",
@@ -115,14 +112,10 @@ async def create_painting(
 
                     if attempt >= settings.painting_max_retries:
                         raise LLMRateLimitError(
-                            "LLM provider rate limit exceeded "
-                            "after retries."
+                            "LLM provider rate limit exceeded after retries."
                         ) from exc
 
-                    delay = (
-                        settings.painting_retry_delay_seconds
-                        * (2**attempt)
-                    )
+                    delay = settings.painting_retry_delay_seconds * (2**attempt)
 
                     span.add_event(
                         "painting.retry",
@@ -137,9 +130,7 @@ async def create_painting(
                     await asyncio.sleep(delay)
 
             if result is None:
-                raise RuntimeError(
-                    "Painting graph completed without producing a result."
-                )
+                raise RuntimeError("Painting graph completed without producing a result.")
 
             canvas_data = await mcp_client.get_canvas()
             canvas = Canvas.model_validate(canvas_data)

@@ -32,9 +32,7 @@ def test_add_circle_tool_mutates_canvas() -> None:
     canvas_tools = CanvasTools(session)
 
     tools = create_artist_tools(canvas_tools)
-    add_circle = next(
-        tool for tool in tools if tool.name == "add_circle"
-    )
+    add_circle = next(tool for tool in tools if tool.name == "add_circle")
 
     result = add_circle.invoke(
         {

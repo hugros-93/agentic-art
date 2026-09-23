@@ -19,6 +19,7 @@ from painting_agents.observability.llm import (
 
 class OpenTelemetryAgentMiddleware(AgentMiddleware):
     """OpenTelemetry instrumentation for LangChain agents."""
+
     def __init__(
         self,
         tracer: trace.Tracer | None = None,
@@ -62,9 +63,7 @@ class OpenTelemetryAgentMiddleware(AgentMiddleware):
         tool = request.tool
         tool_name = tool.name if tool is not None else "unknown"
 
-        with self.tracer.start_as_current_span(
-            f"agent.tool.{tool_name}"
-        ) as span:
+        with self.tracer.start_as_current_span(f"agent.tool.{tool_name}") as span:
             span.set_attribute(
                 "tool.name",
                 tool_name,

@@ -130,10 +130,7 @@ class PaintingGraphNodes:
             canvas_data = await self.mcp_client.get_canvas()
             canvas = Canvas.model_validate(canvas_data)
 
-            iteration_path = (
-                self.output_dir
-                / f"iteration-{iteration:03d}.png"
-            )
+            iteration_path = self.output_dir / f"iteration-{iteration:03d}.png"
 
             self.output_dir.mkdir(parents=True, exist_ok=True)
             render_png(canvas, iteration_path)
@@ -150,7 +147,6 @@ class PaintingGraphNodes:
             return {
                 "image_path": str(iteration_path),
             }
-
 
     async def critic_node(
         self,

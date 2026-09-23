@@ -37,11 +37,7 @@ class OpenTelemetryCallbackHandler(BaseCallbackHandler):
             if isinstance(name, str):
                 span.set_attribute("llm.class", name)
 
-        flattened = [
-            message
-            for message_group in messages
-            for message in message_group
-        ]
+        flattened = [message for message_group in messages for message in message_group]
 
         record_llm_prompt(span, flattened)
 

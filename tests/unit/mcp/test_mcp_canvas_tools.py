@@ -36,6 +36,7 @@ def test_add_circle(tools: CanvasTools) -> None:
     result = tools.get_canvas()
     assert len(result["shapes"]) == 1
 
+
 def test_add_rectangle(tools: CanvasTools) -> None:
     result = tools.add_rectangle(
         shape_id="house",
@@ -85,6 +86,7 @@ def test_add_line(tools: CanvasTools) -> None:
     result = tools.get_canvas()
     assert len(result["shapes"]) == 1
 
+
 def test_remove_shape(tools: CanvasTools) -> None:
     tools.add_circle(
         shape_id="sun",
@@ -105,6 +107,7 @@ def test_remove_shape(tools: CanvasTools) -> None:
 
     assert result["shapes"] == []
 
+
 def test_duplicate_shape_id_is_rejected(tools: CanvasTools) -> None:
     tools.add_circle(
         shape_id="sun",
@@ -122,6 +125,7 @@ def test_duplicate_shape_id_is_rejected(tools: CanvasTools) -> None:
             radius=50,
             fill="#FF0000",
         )
+
 
 def test_add_circle_records_artist_operation() -> None:
     session = create_painting_session(

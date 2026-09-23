@@ -8,9 +8,7 @@ def parse_mcp_result(result: Any) -> dict[str, Any]:
         return result
 
     if not isinstance(result, list):
-        raise TypeError(
-            f"Unexpected MCP result type: {type(result).__name__}"
-        )
+        raise TypeError(f"Unexpected MCP result type: {type(result).__name__}")
 
     for item in result:
         if not isinstance(item, dict):

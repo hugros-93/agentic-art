@@ -50,6 +50,7 @@ async def test_mcp_add_circle() -> None:
     assert parsed["shape"]["id"] == "sun"
     assert parsed["shape"]["type"] == "circle"
 
+
 @pytest.mark.asyncio
 async def test_mcp_canvas_state_persists_between_tool_calls() -> None:
     project_root = Path(__file__).resolve().parents[2]
@@ -58,14 +59,8 @@ async def test_mcp_canvas_state_persists_between_tool_calls() -> None:
     client = PaintingMCPClient(server_script)
     tools = await client.get_tools()
 
-    add_circle = next(
-        tool for tool in tools
-        if tool.name == "add_circle"
-    )
-    get_canvas = next(
-        tool for tool in tools
-        if tool.name == "get_canvas"
-    )
+    add_circle = next(tool for tool in tools if tool.name == "add_circle")
+    get_canvas = next(tool for tool in tools if tool.name == "get_canvas")
 
     add_result = await add_circle.ainvoke(
         {

@@ -12,9 +12,7 @@ def test_record_llm_response_records_usage() -> None:
     exporter = InMemorySpanExporter()
 
     provider = TracerProvider()
-    provider.add_span_processor(
-        SimpleSpanProcessor(exporter)
-    )
+    provider.add_span_processor(SimpleSpanProcessor(exporter))
 
     tracer = provider.get_tracer("test")
 

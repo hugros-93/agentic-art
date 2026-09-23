@@ -53,6 +53,7 @@ def record_llm_response(
             {"content": str(response.content)},
         )
 
+
 def record_llm_prompt(
     span: trace.Span,
     messages: Sequence[BaseMessage],

@@ -43,6 +43,7 @@ def test_next_iteration() -> None:
 
     assert session.iteration == 2
 
+
 def test_canvas_tools_operate_on_session() -> None:
     session = create_painting_session(title="Test Painting")
     tools = CanvasTools(session)
@@ -61,6 +62,7 @@ def test_canvas_tools_operate_on_session() -> None:
 
     assert len(session.operations) == 1
     assert session.operations[0].operation == "add_circle"
+
 
 def test_session_records_operations() -> None:
     session = create_painting_session(

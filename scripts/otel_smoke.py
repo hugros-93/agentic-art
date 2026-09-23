@@ -23,19 +23,13 @@ def main() -> None:
         insecure=True,
     )
 
-    provider.add_span_processor(
-        SimpleSpanProcessor(exporter)
-    )
+    provider.add_span_processor(SimpleSpanProcessor(exporter))
 
     trace.set_tracer_provider(provider)
 
-    tracer = trace.get_tracer(
-        "painting-agents.smoke"
-    )
+    tracer = trace.get_tracer("painting-agents.smoke")
 
-    with tracer.start_as_current_span(
-        "smoke.test"
-    ) as span:
+    with tracer.start_as_current_span("smoke.test") as span:
         span.set_attribute(
             "test.message",
             "Hello Jaeger",

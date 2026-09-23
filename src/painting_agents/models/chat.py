@@ -17,9 +17,7 @@ def create_chat_model(settings: Settings) -> BaseChatModel:
 
     if settings.llm_provider == "mistral":
         if settings.mistral_api_key is None:
-            raise ValueError(
-                "MISTRAL_API_KEY must be configured when using Mistral."
-            )
+            raise ValueError("MISTRAL_API_KEY must be configured when using Mistral.")
 
         return ChatMistralAI(
             model_name=settings.mistral_model,
@@ -28,6 +26,4 @@ def create_chat_model(settings: Settings) -> BaseChatModel:
             max_retries=settings.mistral_max_retries,
         )
 
-    raise ValueError(
-        f"Unsupported LLM provider: {settings.llm_provider}"
-    )
+    raise ValueError(f"Unsupported LLM provider: {settings.llm_provider}")

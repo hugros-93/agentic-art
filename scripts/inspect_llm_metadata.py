@@ -7,13 +7,7 @@ from painting_agents.models.ollama import create_ollama_model
 async def main() -> None:
     model = create_ollama_model()
 
-    response = await model.ainvoke(
-        [
-            HumanMessage(
-                content="Reply with exactly: telemetry test"
-            )
-        ]
-    )
+    response = await model.ainvoke([HumanMessage(content="Reply with exactly: telemetry test")])
 
     print("\n=== RESPONSE TYPE ===")
     print(type(response))

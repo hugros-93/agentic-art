@@ -19,9 +19,7 @@ def test_director_creates_painting_plan() -> None:
 
     director = DirectorAgent(model=model)
 
-    plan = director.create_plan(
-        "Paint a peaceful sunset over a mountain village."
-    )
+    plan = director.create_plan("Paint a peaceful sunset over a mountain village.")
 
     assert plan == expected_plan
 

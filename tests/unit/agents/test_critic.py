@@ -21,7 +21,7 @@ def test_critic_returns_structured_critique() -> None:
     plan = PaintingPlan(
         title="Simple sunset",
         description="A simple sunset over the ground.",
-        style="minimal geometric"
+        style="minimal geometric",
     )
 
     canvas = {

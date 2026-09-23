@@ -14,6 +14,7 @@ from painting_agents.config import Settings
 
 _initialized = False
 
+
 def configure_tracing(settings: Settings) -> None:
     """Configure OpenTelemetry tracing."""
 
@@ -30,9 +31,7 @@ def configure_tracing(settings: Settings) -> None:
         insecure=True,
     )
 
-    provider.add_span_processor(
-        BatchSpanProcessor(exporter)
-    )
+    provider.add_span_processor(BatchSpanProcessor(exporter))
 
     trace.set_tracer_provider(provider)
 

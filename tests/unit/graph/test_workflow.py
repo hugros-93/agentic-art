@@ -13,11 +13,7 @@ from painting_agents.graph.workflow import build_painting_graph
 
 class FakeDirector:
     def create_plan(self, request: str) -> PaintingPlan:
-        return PaintingPlan(
-            title="Test painting",
-            description=request,
-            style="minimal geometric"
-        )
+        return PaintingPlan(title="Test painting", description=request, style="minimal geometric")
 
 
 class FakeArtist:

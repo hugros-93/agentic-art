@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     )
 
     # Provider
-    llm_provider: str = "mistral" #"ollama"
+    llm_provider: str = "mistral"  # "ollama"
 
     # Ollama (local)
     ollama_base_url: str = "http://localhost:11434"

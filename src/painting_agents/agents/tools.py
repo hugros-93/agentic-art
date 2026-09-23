@@ -37,8 +37,6 @@ def create_artist_tools(canvas_tools: CanvasTools) -> list[StructuredTool]:
         StructuredTool.from_function(
             func=canvas_tools.remove_shape,
             name="remove_shape",
-            description=(
-                "Remove an existing shape from the painting by its ID."
-            ),
+            description=("Remove an existing shape from the painting by its ID."),
         ),
     ]

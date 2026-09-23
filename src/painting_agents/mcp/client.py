@@ -54,11 +54,7 @@ class PaintingMCPClient:
     async def get_canvas(self) -> dict[str, Any]:
         tools = await self.get_tools()
 
-        get_canvas_tool = next(
-            tool
-            for tool in tools
-            if tool.name == "get_canvas"
-        )
+        get_canvas_tool = next(tool for tool in tools if tool.name == "get_canvas")
 
         result = await get_canvas_tool.ainvoke({})
 

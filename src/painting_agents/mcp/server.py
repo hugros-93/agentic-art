@@ -6,6 +6,7 @@ from painting_agents.mcp.tools.canvas import CanvasTools
 
 mcp = FastMCP("painting-tools")
 
+
 def create_session() -> PaintingSession:
     return create_painting_session(
         title="Untitled Painting",

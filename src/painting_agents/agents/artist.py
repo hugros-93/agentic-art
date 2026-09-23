@@ -46,8 +46,8 @@ the corresponding tool successfully.
 - When a tool requires a color, use a valid 6-digit hexadecimal. CSS color in the form #RRGGBB.
             """,
             middleware=[
-                    OpenTelemetryAgentMiddleware(),
-                ]
+                OpenTelemetryAgentMiddleware(),
+            ],
         )
 
     async def paint(
@@ -55,10 +55,7 @@ the corresponding tool successfully.
         plan: PaintingPlan,
         critique: str | None = None,
     ) -> ArtistResult:
-        content = (
-            "Execute this painting plan:\n\n"
-            f"{plan.model_dump_json(indent=2)}"
-        )
+        content = f"Execute this painting plan:\n\n{plan.model_dump_json(indent=2)}"
 
         if critique is not None:
             content += (
@@ -68,9 +65,7 @@ the corresponding tool successfully.
                 "parts of the painting that already satisfy the plan."
             )
 
-        result = await self.agent.ainvoke(
-            {"messages": [{"role": "user", "content": content}]}
-)
+        result = await self.agent.ainvoke({"messages": [{"role": "user", "content": content}]})
 
         return self._build_result(result)
 

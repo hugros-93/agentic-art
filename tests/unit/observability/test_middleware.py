@@ -17,22 +17,19 @@ from painting_agents.observability.agent_middleware import (
 model = MagicMock(spec=BaseChatModel)
 model.model = "qwen3:0.6b"
 
+
 @pytest.mark.asyncio
 async def test_model_middleware_records_llm_call() -> None:
     exporter = InMemorySpanExporter()
 
     provider = TracerProvider()
-    provider.add_span_processor(
-        SimpleSpanProcessor(exporter)
-    )
+    provider.add_span_processor(SimpleSpanProcessor(exporter))
 
     middleware = OpenTelemetryAgentMiddleware(
         tracer=provider.get_tracer("test"),
     )
 
-    message = HumanMessage(
-        content="Draw a red circle."
-    )
+    message = HumanMessage(content="Draw a red circle.")
 
     response = ModelResponse(
         result=[
@@ -51,9 +48,7 @@ async def test_model_middleware_records_llm_call() -> None:
         ]
     )
 
-    handler = AsyncMock(
-        return_value=response
-    )
+    handler = AsyncMock(return_value=response)
 
     request = ModelRequest(
         model=model,
@@ -91,10 +86,7 @@ async def test_model_middleware_records_llm_call() -> None:
     assert attributes["llm.output_tokens"] == 7
     assert attributes["llm.total_tokens"] == 17
 
-    event_names = [
-        event.name
-        for event in span.events
-    ]
+    event_names = [event.name for event in span.events]
 
     assert "llm.prompt" in event_names
     assert "llm.response" in event_names
